@@ -1,0 +1,5 @@
+101$John$Doe$9876543210$john.doe@example.com$2023-06-15$true
+102$Asha$Kumar$9123456789$asha.kumar@example.com$2022-01-20$true
+103$Ravi$Patel$9988776655$ravi.patel@example.com$2021-08-05$false
+104$Emily$Smith$9871234567$emily.smith@example.com$2020-11-30$true
+105$Arjun$Reddy$9765432109$arjun.reddy@example.com$2023-03-10$false
