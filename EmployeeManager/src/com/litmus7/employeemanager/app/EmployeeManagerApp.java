@@ -14,7 +14,10 @@ import com.litmus7.employeemanager.controller.EmployeeController;
 
 public class EmployeeManagerApp {
 	
+	private static EmployeeManagerApp employeeManagerApp = new EmployeeManagerApp();
+	
 	public static void main(String[] args) {
+		EmployeeController employeeController = new EmployeeController();
 		
 		boolean flag = true;
 		
@@ -41,24 +44,24 @@ public class EmployeeManagerApp {
 				
 				switch(choice) {
 				case 1:
-					textReceivedResponse =  new EmployeeController().getDataFromTextFile(fileName);
+					textReceivedResponse =  employeeController.getDataFromTextFile(fileName);
 					if (textReceivedResponse.getApplicationStatus()) {
-						new EmployeeManagerApp().printEmployeeDetails(textReceivedResponse.getData());
+						employeeManagerApp.printEmployeeDetails(textReceivedResponse.getData());
 						System.out.println(textReceivedResponse.getMessage());
 					}
 					else 
 						System.err.println(textReceivedResponse.getMessage());
 				
-					Response<Void, Boolean, String> dataWriteToCsvResponse = new EmployeeController().writeDataToCSV(textReceivedResponse.getData(), csvFilePath);
+					Response<Void, Boolean, String> dataWriteToCsvResponse = employeeController.writeDataToCSV(textReceivedResponse.getData(), csvFilePath);
 					if (dataWriteToCsvResponse.getApplicationStatus()) 
 						System.out.println(dataWriteToCsvResponse.getMessage());
 					else 
 						System.err.println(dataWriteToCsvResponse.getMessage());
 					break;
 				case 2:		
-					List<String> dataFromUser = new EmployeeManagerApp().getSingleInputFromUser(reader);
+					List<String> dataFromUser = employeeManagerApp.getSingleInputFromUser(reader);
 
-					Response<Employee , Boolean, String> newEmployeeAddResponse = new EmployeeController().appendDataToCSV(dataFromUser,textReceivedResponse.getData(),csvFilePath);
+					Response<Employee , Boolean, String> newEmployeeAddResponse = employeeController.appendDataToCSV(dataFromUser,textReceivedResponse.getData(),csvFilePath);
 					if (newEmployeeAddResponse.getApplicationStatus()) {
 						textReceivedResponse.getData().add(newEmployeeAddResponse.getData());
 						System.out.println(newEmployeeAddResponse.getMessage()+"\n");
@@ -69,18 +72,18 @@ public class EmployeeManagerApp {
 					break;
 				case 3:
 					System.out.println("Enter employee details:");
-					List<String> employees1 = new EmployeeManagerApp().getSingleInputFromUser(reader);
-					Employee employee = new EmployeeManagerApp().createEmployeeFromData(employees1);
-					Response<Void, Boolean, String> employeeCreatedResponse = new EmployeeController().createEmployee(employee);
+					List<String> employees1 = employeeManagerApp.getSingleInputFromUser(reader);
+					Employee employee = employeeManagerApp.createEmployeeFromData(employees1);
+					Response<Void, Boolean, String> employeeCreatedResponse = employeeController.createEmployee(employee);
 					if (employeeCreatedResponse.getApplicationStatus()) 
 						System.out.println(employeeCreatedResponse.getMessage());
 					else 
 						System.err.println(employeeCreatedResponse.getMessage());
 					break;
 				case 4:
-					Response<List<Employee>, Boolean, String> employeesFetchedResponse = new EmployeeController().getAllEmployees();
+					Response<List<Employee>, Boolean, String> employeesFetchedResponse = employeeController.getAllEmployees();
 					if (employeesFetchedResponse.getApplicationStatus()) {
-						new EmployeeManagerApp().printEmployeeDetails(employeesFetchedResponse.getData());
+						employeeManagerApp.printEmployeeDetails(employeesFetchedResponse.getData());
 						System.out.println(employeesFetchedResponse.getMessage());
 					}
 					else 
@@ -89,9 +92,9 @@ public class EmployeeManagerApp {
 				case 5:
 					System.out.print("Enter employee id: ");
 					int employeeId = Integer.parseInt(reader.readLine());
-					Response<Employee, Boolean, String> employeeFetchedResponse =  new EmployeeController().getEmployeeById(employeeId);
+					Response<Employee, Boolean, String> employeeFetchedResponse =  employeeController.getEmployeeById(employeeId);
 					if (employeeFetchedResponse.getApplicationStatus()) {
-						new EmployeeManagerApp().printEmployeeObject(employeeFetchedResponse.getData());
+						employeeManagerApp.printEmployeeObject(employeeFetchedResponse.getData());
 						System.out.println(employeeFetchedResponse.getMessage());
 					}
 					else 
@@ -100,7 +103,7 @@ public class EmployeeManagerApp {
 				case 6:
 					System.out.print("Enter employee id: ");
 					int employeeId1 = Integer.parseInt(reader.readLine());
-					Response<Void, Boolean, String> employeeDeletedResponse = new EmployeeController().deleteEmployeebyId(employeeId1);
+					Response<Void, Boolean, String> employeeDeletedResponse = employeeController.deleteEmployeebyId(employeeId1);
 					if (employeeDeletedResponse.getApplicationStatus()) 
 						System.out.println(employeeDeletedResponse.getMessage());
 					else 
@@ -108,9 +111,9 @@ public class EmployeeManagerApp {
 					break;
 				case 7:
 					System.out.println("Enter employee details:");
-					List<String> employees11 = new EmployeeManagerApp().getSingleInputFromUser(reader);
-					Employee employee1 = new EmployeeManagerApp().createEmployeeFromData(employees11);
-					Response<Void, Boolean, String> employeeUpdatedResponse = new EmployeeController().updateEmployee(employee1);
+					List<String> employees11 = employeeManagerApp.getSingleInputFromUser(reader);
+					Employee employee1 = employeeManagerApp.createEmployeeFromData(employees11);
+					Response<Void, Boolean, String> employeeUpdatedResponse = employeeController.updateEmployee(employee1);
 					if (employeeUpdatedResponse.getApplicationStatus()) 
 						System.out.println(employeeUpdatedResponse.getMessage());
 					else 
