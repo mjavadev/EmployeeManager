@@ -6,6 +6,8 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.Properties;
 
+import com.litmus7.employeemanager.constant.MessageConstants;
+
 public class DbConnectionUtil {
 	
 	private static String url;
@@ -19,7 +21,7 @@ public class DbConnectionUtil {
 			Properties properties = new Properties();
 			
 			InputStream inputStream = DbConnectionUtil.class.getClassLoader().getResourceAsStream("db.properties");
-			if(inputStream == null) throw new RuntimeException("Could not find db.properties in classpath");
+			if(inputStream == null) throw new RuntimeException(MessageConstants.ERROR_DB_PROPERTIES_NOT_FOUND_IN_CLASSPATH);
 			
 			properties.load(inputStream);
 			
@@ -31,7 +33,7 @@ public class DbConnectionUtil {
 			Class.forName(driver);
 			
 		} catch (Exception e) {
-			throw new RuntimeException("Failed to load database configuration", e);
+			throw new RuntimeException(MessageConstants.ERROR_DB_CONFIG_LOAD_FAILED, e);
 		}
 	}
 	

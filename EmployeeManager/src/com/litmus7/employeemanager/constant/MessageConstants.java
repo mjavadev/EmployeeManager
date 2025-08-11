@@ -73,6 +73,13 @@ public class MessageConstants {
 	public static final String INVALID_ACTIVE_STATUS = "Active status must be true or false.";
 
 	
+	
+	
+	//DbConnectionUtil
+	public static final String ERROR_DB_PROPERTIES_NOT_FOUND_IN_CLASSPATH = "Could not find db.properties in classpath";
+	public static final String ERROR_DB_CONFIG_LOAD_FAILED = "Failed to load database configuration";
+	
+	
 
 	
 }

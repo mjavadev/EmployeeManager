@@ -42,7 +42,6 @@ public class EmployeeDAO {
 			ResultSet resultSet = preparedStatement.executeQuery();
 			return getEmployeesFromResultSet(resultSet);
 		} catch(SQLException e) {
-			e.printStackTrace();
 			throw new AppException(MessageConstants.ERROR_RETRIEVING_EMPLOYEE_LIST,e);
 		}
 	}
@@ -55,7 +54,6 @@ public class EmployeeDAO {
 			ResultSet resultSet = preparedStatement.executeQuery();
 			return getEmployeeFromResultSet(resultSet);
 		} catch(SQLException e) {
-			e.printStackTrace();
 			throw new AppException(MessageConstants.ERROR_RETRIEVING_EMPLOYEE,e);
 		}
 	}
