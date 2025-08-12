@@ -86,7 +86,7 @@ public class EmployeeController {
 		try {
 			employeeService.createEmployee(employee);
 		} catch (EmployeeServiceException e) {
-			return new Response<>(null,false,e.getMessage());
+			return new Response<>(null,false,MessageConstants.ERROR_EMPLOYEE_CREATION_FAILED);
 		}
 		return new Response<>(null,true, MessageConstants.EMPLOYEE_INSERTED_SUCCESFULLY);
 	}
@@ -95,10 +95,12 @@ public class EmployeeController {
 		List<Employee> employees; //= new ArrayList<>();
 		try {
 			employees = employeeService.getAllEmployees();
-		} catch (EmployeeServiceException | EmployeeNotFoundException e) {
+		} catch (EmployeeServiceException e) {
+			return new Response<>(null,false,MessageConstants.ERROR_EMPLOYEES_FETCH_FAILED);
+		} catch (EmployeeNotFoundException e) {
 			return new Response<>(null,false,e.getMessage());
 		}
-		return new Response<>(employees,true,MessageConstants.EMPLOYEE_LIST_RETRIEVED_SUCCESSFULLY);
+		return new Response<>(employees,true,MessageConstants.ALL_EMPLOYEES_RETRIEVED_SUCCESSFULLY);
 	}
 	
 	public Response<Employee, Boolean, String> getEmployeeById(int employeeId) {
@@ -106,7 +108,9 @@ public class EmployeeController {
 		Employee employee = null;
 		try {
 			employee = employeeService.getEmployeeById(employeeId);
-		} catch (EmployeeServiceException | EmployeeNotFoundException e) {
+		} catch (EmployeeServiceException e) {
+			return new Response<>(null,false,MessageConstants.ERROR_EMPLOYEE_FETCH_FAILED);
+		} catch (EmployeeNotFoundException e) {
 			return new Response<>(null,false,e.getMessage());
 		}
 		return new Response<>(employee,true,MessageConstants.EMPLOYEE_RETRIEVED_SUCCESSFULLY);
@@ -116,7 +120,9 @@ public class EmployeeController {
 		if (employeeId <= 0) return new Response<>(null,false, MessageConstants.INVALID_EMPLOYEE_ID);
 		try {
 			employeeService.deleteEmployeebyId(employeeId);
-		} catch (EmployeeServiceException | EmployeeNotFoundException e) {
+		} catch (EmployeeServiceException e) {
+			return new Response<>(null,false,MessageConstants.ERROR_EMPLOYEE_DELETION_FAILED);
+		} catch (EmployeeNotFoundException e) {
 			return new Response<>(null,false,e.getMessage());
 		}
 		return new Response<>(null,true,MessageConstants.EMPLOYEE_DELETED_SUCCESSFULLY);
@@ -126,7 +132,9 @@ public class EmployeeController {
 		if (employee == null) return new Response<>(null,false,MessageConstants.EMPLOYEE_DETAILS_REQUIRED);
 		try {
 			employeeService.updateEmployee(employee);
-		} catch (EmployeeServiceException | EmployeeNotFoundException e) {
+		} catch (EmployeeServiceException e) {
+			return new Response<>(null,false,MessageConstants.ERROR_EMPLOYEE_UPDATION_FAILED);
+		} catch (EmployeeNotFoundException e) {
 			return new Response<>(null,false,e.getMessage());
 		}
 		return new Response<>(null,true, MessageConstants.EMPLOYEE_UPDATED_SUCCESSFULLY);

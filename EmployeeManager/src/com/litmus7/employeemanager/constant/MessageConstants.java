@@ -20,6 +20,8 @@ public class MessageConstants {
 	public static final String ERROR_UPDATING_EMPLOYEE = "An error occurred while updating the employee.";
 	public static final String EMPLOYEE_ALREADY_EXISTS = "Employee already exists.";
 	
+	
+	
 	//Employee - Service Layer Failure Messages
 	public static final String ERROR_SERVICE_CREATE_EMPLOYEE = "Service layer failed to create employee";
 	public static final String ERROR_SERVICE_FETCH_EMPLOYEE = "Service layer failed to fetch employee";
@@ -29,8 +31,7 @@ public class MessageConstants {
 	
 	public static final String ERROR_EMPLOYEE_NOT_FOUND_BY_ID = "Employee with ID %s not found.";
 	public static final String ERROR_NO_EMPLOYEES_FOUND = "No Employees found.";
-//	public static final String ERROR_EMPLOYEE_CREATION_FAILED = "Employee creation failed.";
-	//public static final String ERROR_EMPLOYEE_DELETION_FAILED = "Employee deletion failed.";
+	
 	
 	public static final String FAILED_TO_INSERT_EMPLOYEE = "Failed to insert employee.";
 	public static final String EMPLOYEE_NOT_FOUND = "Employee not found.";
@@ -44,7 +45,7 @@ public class MessageConstants {
 	public static final String DATA_WRITTEN_TO_CSV_SUCCESSFULLY = "Data written to CSV succesfully.";
 	public static final String EMPLOYEE_ADDED_TO_CSV_SUCCESSFULLY = "Employee added to CSV successfully.";
 	public static final String EMPLOYEE_INSERTED_SUCCESFULLY = "Employee inserted successfully.";
-	public static final String EMPLOYEE_LIST_RETRIEVED_SUCCESSFULLY = "Employee list retrieved successfully.";
+	public static final String ALL_EMPLOYEES_RETRIEVED_SUCCESSFULLY = "All employees retrieved successfully.";
 	public static final String EMPLOYEE_RETRIEVED_SUCCESSFULLY = "Employee retrieved successfully.";
 	public static final String EMPLOYEE_DELETED_SUCCESSFULLY = "Employee deleted successfully.";
 	public static final String EMPLOYEE_UPDATED_SUCCESSFULLY = "Employee updated successfully.";
@@ -59,6 +60,12 @@ public class MessageConstants {
 	public static final String FAILED_TO_ADD_EMPLOYEE_TO_CSV = "Failed to add employee to CSV";
 	public static final String EMPLOYEE_DETAILS_REQUIRED = "Please provide employee details";
 	public static final String INVALID_EMPLOYEE_ID = "Invalid employee id";
+
+	public static final String ERROR_EMPLOYEE_CREATION_FAILED = "Employee creation failed.";
+	public static final String ERROR_EMPLOYEE_DELETION_FAILED = "Employee deletion failed.";
+	public static final String ERROR_EMPLOYEE_UPDATION_FAILED = "Employee updation failed.";
+	public static final String ERROR_EMPLOYEE_FETCH_FAILED = "Failed to retrieve employee details.";
+	public static final String ERROR_EMPLOYEES_FETCH_FAILED = "Failed to retrieve employee list.";
 
 	// Validation Messages
 
