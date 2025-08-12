@@ -127,7 +127,7 @@ public class EmployeeManagerApp {
 				}
 				
 			} catch (NumberFormatException e) {
-				System.err.println(MessageConstants.ERROR_INVALID_OPTION+"\n");
+				System.err.println(MessageConstants.ERROR_INVALID_NUMBER+"\n");
 			} catch (IOException e) {
 				System.err.println(MessageConstants.ERROR_FILE_ACCESS_FAILED+"\n");
 			} 

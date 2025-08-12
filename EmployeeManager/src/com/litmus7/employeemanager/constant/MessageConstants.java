@@ -98,7 +98,7 @@ public class MessageConstants {
 	
 	
 	// MAIN
-	public static final String ERROR_INVALID_OPTION = "No option selected. Please choose a valid option.";
+	public static final String ERROR_INVALID_NUMBER = "Please enter a valid number.";
 	public static final String ERROR_FILE_ACCESS_FAILED = "Unable to access the file. Please try again.";
 	public static final String ERROR_FILE_CLOSING_FAILED = "An unexpected error occurred while closing the file.";
 
