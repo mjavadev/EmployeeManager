@@ -9,7 +9,7 @@ import java.util.List;
 
 import com.litmus7.employeemanager.dto.Employee;
 import com.litmus7.employeemanager.dto.Response;
-import com.litmus7.employeemanager.exception.AppException;
+import com.litmus7.employeemanager.constant.MessageConstants;
 import com.litmus7.employeemanager.controller.EmployeeController;
 
 public class EmployeeManagerApp {
@@ -127,19 +127,16 @@ public class EmployeeManagerApp {
 				}
 				
 			} catch (NumberFormatException e) {
-				AppException custom = new AppException("No option selected. Please choose a valid option.",e);
-				System.err.println(custom.getMessage()+"\n");
+				System.err.println(MessageConstants.ERROR_INVALID_OPTION+"\n");
 			} catch (IOException e) {
-				AppException custom = new AppException("Unable to access the file. Please try again.",e);
-				System.err.println(custom.getMessage()+"\n");
+				System.err.println(MessageConstants.ERROR_FILE_ACCESS_FAILED+"\n");
 			} 
 		}
 		
 		try {
 			reader.close();
 		} catch (IOException e) {
-			AppException custom = new AppException("An unexpected error occurred while closing the file.",e);
-			System.err.println(custom.getMessage()+"\n");
+			System.err.println(MessageConstants.ERROR_FILE_CLOSING_FAILED+"\n");
 		}
 	}
 

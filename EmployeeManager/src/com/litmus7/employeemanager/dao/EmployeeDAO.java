@@ -10,7 +10,7 @@ import java.time.LocalDate;
 import com.litmus7.employeemanager.constant.MessageConstants;
 import com.litmus7.employeemanager.constant.SqlConstants;
 import com.litmus7.employeemanager.dto.Employee;
-import com.litmus7.employeemanager.exception.AppException;
+import com.litmus7.employeemanager.exception.EmployeeDaoException;
 import com.litmus7.employeemanager.util.DbConnectionUtil;
 
 import java.util.ArrayList;
@@ -18,10 +18,10 @@ import java.util.List;
 
 public class EmployeeDAO {
 	
-	public int saveEmployee(Employee employee) throws AppException {
-		try(Connection connection = DbConnectionUtil.getConnection()) {
-			String employeeInsertQuery = SqlConstants.INSERT_EMPLOYEE;
-			PreparedStatement preparedStatement = connection.prepareStatement(employeeInsertQuery);
+	public int saveEmployee(Employee employee) throws EmployeeDaoException {
+		String employeeInsertQuery = SqlConstants.INSERT_EMPLOYEE;
+		try(Connection connection = DbConnectionUtil.getConnection();
+			PreparedStatement preparedStatement = connection.prepareStatement(employeeInsertQuery))  {		
 			preparedStatement.setInt(1, employee.getId());
 			preparedStatement.setString(2, employee.getFirstName());
 			preparedStatement.setString(3, employee.getLastName());
@@ -31,48 +31,49 @@ public class EmployeeDAO {
 			preparedStatement.setBoolean(7, employee.getActiveStatus());
 			return preparedStatement.executeUpdate();
 		} catch(SQLException e) {
-			throw new AppException(MessageConstants.ERROR_INSERTING_EMPLOYEE,e);
+			throw new EmployeeDaoException(MessageConstants.ERROR_DB_SAVE_EMPLOYEE,e);
 		}
 	} 
 	
-	public List<Employee> getAllEmployees() throws AppException {
-		try(Connection connection = DbConnectionUtil.getConnection()) {
-			String employeesSelectQuery = SqlConstants.SELECT_All_EMPLOYEES;
+	public List<Employee> getAllEmployees() throws EmployeeDaoException {
+		String employeesSelectQuery = SqlConstants.SELECT_All_EMPLOYEES;
+		try(Connection connection = DbConnectionUtil.getConnection();
 			PreparedStatement preparedStatement = connection.prepareStatement(employeesSelectQuery);
-			ResultSet resultSet = preparedStatement.executeQuery();
+			ResultSet resultSet = preparedStatement.executeQuery()) {
 			return getEmployeesFromResultSet(resultSet);
 		} catch(SQLException e) {
-			throw new AppException(MessageConstants.ERROR_RETRIEVING_EMPLOYEE_LIST,e);
+			throw new EmployeeDaoException(MessageConstants.ERROR_DB_FETCH_ALL_EMPLOYEES,e);
 		}
 	}
 	
-	public Employee getEmployeeById(int employeeId) throws AppException {
-		try(Connection connection = DbConnectionUtil.getConnection()) {
-			String employeeSelectQuery = SqlConstants.SELECT_EMPLOYEE;
-			PreparedStatement preparedStatement = connection.prepareStatement(employeeSelectQuery);
+	public Employee getEmployeeById(int employeeId) throws EmployeeDaoException {
+		String employeeSelectQuery = SqlConstants.SELECT_EMPLOYEE;
+		try(Connection connection = DbConnectionUtil.getConnection(); 
+			PreparedStatement preparedStatement = connection.prepareStatement(employeeSelectQuery)) {
 			preparedStatement.setInt(1, employeeId);
-			ResultSet resultSet = preparedStatement.executeQuery();
-			return getEmployeeFromResultSet(resultSet);
+			try (ResultSet resultSet = preparedStatement.executeQuery()) {
+				return getEmployeeFromResultSet(resultSet);
+			}
 		} catch(SQLException e) {
-			throw new AppException(MessageConstants.ERROR_RETRIEVING_EMPLOYEE,e);
+			throw new EmployeeDaoException(MessageConstants.ERROR_DB_FETCH_EMPLOYEE,e);
 		}
 	}
 	
-	public int deleteEmployeebyId(int employeeId) throws AppException {
-		try(Connection connection = DbConnectionUtil.getConnection()) {
-			String employeeDeleteQuery = SqlConstants.DELETE_EMPLOYEE; 
-			PreparedStatement preparedStatement = connection.prepareStatement(employeeDeleteQuery);
+	public int deleteEmployeebyId(int employeeId) throws EmployeeDaoException   {
+		String employeeDeleteQuery = SqlConstants.DELETE_EMPLOYEE;
+		try(Connection connection = DbConnectionUtil.getConnection();
+			PreparedStatement preparedStatement = connection.prepareStatement(employeeDeleteQuery)) {
 			preparedStatement.setInt(1, employeeId);
 			return preparedStatement.executeUpdate();
 		} catch(SQLException e) {
-			throw new AppException(MessageConstants.ERROR_DELETING_EMPLOYEE,e);
+			throw new EmployeeDaoException(MessageConstants.ERROR_DB_DELETE_EMPLOYEE,e);
 		}
 	}
 	
-	public int updateEmployee(Employee employee) throws AppException {
-		try(Connection connection = DbConnectionUtil.getConnection()) {
-			String employeeUpdateQuery = SqlConstants.UPDATE_EMPLOYEE;
-			PreparedStatement preparedStatement = connection.prepareStatement(employeeUpdateQuery);
+	public int updateEmployee(Employee employee) throws EmployeeDaoException {
+		String employeeUpdateQuery = SqlConstants.UPDATE_EMPLOYEE;
+		try(Connection connection = DbConnectionUtil.getConnection();
+			PreparedStatement preparedStatement = connection.prepareStatement(employeeUpdateQuery)) {
 			preparedStatement.setString(1, employee.getFirstName());
 			preparedStatement.setString(2, employee.getLastName());
 			preparedStatement.setString(3, employee.getMobileNumber());
@@ -82,7 +83,7 @@ public class EmployeeDAO {
 			preparedStatement.setInt(7, employee.getId());
 			return preparedStatement.executeUpdate();
 		} catch(SQLException e) {
-			throw new AppException(MessageConstants.ERROR_UPDATING_EMPLOYEE,e);
+			throw new EmployeeDaoException(MessageConstants.ERROR_DB_UPDATE_EMPLOYEE,e);
 		}
 	}
 	

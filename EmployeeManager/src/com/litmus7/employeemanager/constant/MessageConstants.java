@@ -7,6 +7,12 @@ public class MessageConstants {
 	
 	//error massages
 	//Employee - DAO Layer Failure Messages
+	public static final String ERROR_DB_SAVE_EMPLOYEE = "Database error while saving employee";
+	public static final String ERROR_DB_FETCH_EMPLOYEE = "Database error while fetching employee";
+	public static final String ERROR_DB_FETCH_ALL_EMPLOYEES = "Database error while fetching all employees";
+	public static final String ERROR_DB_DELETE_EMPLOYEE = "Database error while deleting employee";
+	public static final String ERROR_DB_UPDATE_EMPLOYEE = "Database error while updating employee";
+	
 	public static final String ERROR_INSERTING_EMPLOYEE = "An error occurred while inserting the employee.";
 	public static final String ERROR_RETRIEVING_EMPLOYEE_LIST = "An error occurred while retrieving employee list.";
 	public static final String ERROR_RETRIEVING_EMPLOYEE = "An error occurred while retrieving the employee.";
@@ -15,11 +21,22 @@ public class MessageConstants {
 	public static final String EMPLOYEE_ALREADY_EXISTS = "Employee already exists.";
 	
 	//Employee - Service Layer Failure Messages
+	public static final String ERROR_SERVICE_CREATE_EMPLOYEE = "Service layer failed to create employee";
+	public static final String ERROR_SERVICE_FETCH_EMPLOYEE = "Service layer failed to fetch employee";
+	public static final String ERROR_SERVICE_FETCH_ALL_EMPLOYEES = "Service layer failed to fetch all employees";
+	public static final String ERROR_SERVICE_DELETE_EMPLOYEE = "Service layer failed to delete employee";
+	public static final String ERROR_SERVICE_UPDATE_EMPLOYEE = "Service layer failed to update employee";
+	
+	public static final String ERROR_EMPLOYEE_NOT_FOUND_BY_ID = "Employee with ID %s not found.";
+	public static final String ERROR_NO_EMPLOYEES_FOUND = "No Employees found.";
+//	public static final String ERROR_EMPLOYEE_CREATION_FAILED = "Employee creation failed.";
+	//public static final String ERROR_EMPLOYEE_DELETION_FAILED = "Employee deletion failed.";
+	
 	public static final String FAILED_TO_INSERT_EMPLOYEE = "Failed to insert employee.";
-	public static final String NO_EMPLOYEES_FOUND = "No Employees found.";
 	public static final String EMPLOYEE_NOT_FOUND = "Employee not found.";
 	public static final String EMPLOYEE_NOT_FOUND_FOR_UPDATE = "Employee not found for update.";
 
+	
 	//Employee - Controller Layer
 
 	// Success
@@ -80,6 +97,12 @@ public class MessageConstants {
 	public static final String ERROR_DB_CONFIG_LOAD_FAILED = "Failed to load database configuration";
 	
 	
+	// MAIN
+	public static final String ERROR_INVALID_OPTION = "No option selected. Please choose a valid option.";
+	public static final String ERROR_FILE_ACCESS_FAILED = "Unable to access the file. Please try again.";
+	public static final String ERROR_FILE_CLOSING_FAILED = "An unexpected error occurred while closing the file.";
 
+	
+	
 	
 }

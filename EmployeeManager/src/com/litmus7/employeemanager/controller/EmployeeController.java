@@ -15,7 +15,8 @@ import java.util.List;
 import com.litmus7.employeemanager.constant.MessageConstants;
 import com.litmus7.employeemanager.dto.Employee;
 import com.litmus7.employeemanager.dto.Response;
-import com.litmus7.employeemanager.exception.AppException;
+import com.litmus7.employeemanager.exception.EmployeeNotFoundException;
+import com.litmus7.employeemanager.exception.EmployeeServiceException;
 import com.litmus7.employeemanager.service.EmployeeService;
 import com.litmus7.employeemanager.util.TextFileUtil;
 import com.litmus7.employeemanager.util.ValidationUtil;
@@ -84,7 +85,7 @@ public class EmployeeController {
 		if (employee == null) return new Response<>(null,false, MessageConstants.EMPLOYEE_DETAILS_REQUIRED);
 		try {
 			employeeService.createEmployee(employee);
-		} catch (AppException e) {
+		} catch (EmployeeServiceException e) {
 			return new Response<>(null,false,e.getMessage());
 		}
 		return new Response<>(null,true, MessageConstants.EMPLOYEE_INSERTED_SUCCESFULLY);
@@ -94,7 +95,7 @@ public class EmployeeController {
 		List<Employee> employees; //= new ArrayList<>();
 		try {
 			employees = employeeService.getAllEmployees();
-		} catch (AppException e) {
+		} catch (EmployeeServiceException | EmployeeNotFoundException e) {
 			return new Response<>(null,false,e.getMessage());
 		}
 		return new Response<>(employees,true,MessageConstants.EMPLOYEE_LIST_RETRIEVED_SUCCESSFULLY);
@@ -105,7 +106,7 @@ public class EmployeeController {
 		Employee employee = null;
 		try {
 			employee = employeeService.getEmployeeById(employeeId);
-		} catch (AppException e) {
+		} catch (EmployeeServiceException | EmployeeNotFoundException e) {
 			return new Response<>(null,false,e.getMessage());
 		}
 		return new Response<>(employee,true,MessageConstants.EMPLOYEE_RETRIEVED_SUCCESSFULLY);
@@ -115,7 +116,7 @@ public class EmployeeController {
 		if (employeeId <= 0) return new Response<>(null,false, MessageConstants.INVALID_EMPLOYEE_ID);
 		try {
 			employeeService.deleteEmployeebyId(employeeId);
-		} catch (AppException e) {
+		} catch (EmployeeServiceException e) {
 			return new Response<>(null,false,e.getMessage());
 		}
 		return new Response<>(null,true,MessageConstants.EMPLOYEE_DELETED_SUCCESSFULLY);
@@ -125,7 +126,7 @@ public class EmployeeController {
 		if (employee == null) return new Response<>(null,false,MessageConstants.EMPLOYEE_DETAILS_REQUIRED);
 		try {
 			employeeService.updateEmployee(employee);
-		} catch (AppException e) {
+		} catch (EmployeeServiceException e) {
 			return new Response<>(null,false,e.getMessage());
 		}
 		return new Response<>(null,true, MessageConstants.EMPLOYEE_UPDATED_SUCCESSFULLY);
