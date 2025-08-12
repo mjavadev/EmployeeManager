@@ -46,25 +46,25 @@ public class EmployeeService {
 		return employee;
 	}
 	
-	public int deleteEmployeebyId(int employeeId) throws EmployeeServiceException {
+	public int deleteEmployeebyId(int employeeId) throws EmployeeServiceException, EmployeeNotFoundException {
 		int rowDeleted=0;
 		try {
 			rowDeleted = employeeDAO.deleteEmployeebyId(employeeId);
 		} catch (EmployeeDaoException e) {
 			throw new EmployeeServiceException(MessageConstants.ERROR_SERVICE_DELETE_EMPLOYEE,e);   //)
 		}
-		if (rowDeleted==0) throw new EmployeeServiceException(MessageConstants.ERROR_SERVICE_DELETE_EMPLOYEE);
+		if (rowDeleted==0) throw new EmployeeNotFoundException(String.format(MessageConstants.ERROR_EMPLOYEE_NOT_FOUND_BY_ID, employeeId));
 		return rowDeleted;
 	}
 	
-	public int updateEmployee(Employee employee) throws EmployeeServiceException {
+	public int updateEmployee(Employee employee) throws EmployeeServiceException, EmployeeNotFoundException {
 		int rowUpdated;
 		try {
 			rowUpdated = employeeDAO.updateEmployee(employee);
 		} catch(EmployeeDaoException e) {
 			throw new EmployeeServiceException(MessageConstants.ERROR_SERVICE_UPDATE_EMPLOYEE, e);
 		}
-		if (rowUpdated==0) throw new EmployeeServiceException(MessageConstants.ERROR_SERVICE_UPDATE_EMPLOYEE);
+		if (rowUpdated==0) throw new EmployeeNotFoundException(String.format(MessageConstants.ERROR_EMPLOYEE_NOT_FOUND_BY_ID, employee.getId()));
 		return rowUpdated;
 	}
 }

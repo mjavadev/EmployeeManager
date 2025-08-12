@@ -116,7 +116,7 @@ public class EmployeeController {
 		if (employeeId <= 0) return new Response<>(null,false, MessageConstants.INVALID_EMPLOYEE_ID);
 		try {
 			employeeService.deleteEmployeebyId(employeeId);
-		} catch (EmployeeServiceException e) {
+		} catch (EmployeeServiceException | EmployeeNotFoundException e) {
 			return new Response<>(null,false,e.getMessage());
 		}
 		return new Response<>(null,true,MessageConstants.EMPLOYEE_DELETED_SUCCESSFULLY);
@@ -126,7 +126,7 @@ public class EmployeeController {
 		if (employee == null) return new Response<>(null,false,MessageConstants.EMPLOYEE_DETAILS_REQUIRED);
 		try {
 			employeeService.updateEmployee(employee);
-		} catch (EmployeeServiceException e) {
+		} catch (EmployeeServiceException | EmployeeNotFoundException e) {
 			return new Response<>(null,false,e.getMessage());
 		}
 		return new Response<>(null,true, MessageConstants.EMPLOYEE_UPDATED_SUCCESSFULLY);
