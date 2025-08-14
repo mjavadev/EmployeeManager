@@ -31,11 +31,11 @@ public class EmployeeManagerApp {
 		while (flag) {
 			System.out.println("1.Get data from text file and write data to csv\n"
 					+ "2.Add new employee data to CSV\n"
-					+ "3.Create Employee\n"
-					+ "4.Get all Employees\n"
-					+ "5.Get all Employees by ID\n"
-					+ "6.Delete Employee by ID\n"
-					+ "7.Update Employee\n"
+					+ "3.Create employee\n"
+					+ "4.Get all employees\n"
+					+ "5.Get employee by ID\n"
+					+ "6.Delete employee by ID\n"
+					+ "7.Update employee\n"
 					+ "8.Exit");
 			int choice = -1;
 			System.out.print("Enter choice: ");

@@ -44,4 +44,14 @@ public class Employee {
 		return activeStatus;
 	}
 
+	@Override
+	public String toString() {
+		return "Employee [id=" + id + ", firstName=" + firstName + ", lastName=" + lastName + ", mobileNo=" + maskMobileNumber(mobileNo)
+				+ ", email=" + email + ", date=" + date + ", activeStatus=" + activeStatus + "]";
+	}
+
+	private String maskMobileNumber(String mobileNumber) {
+		if (mobileNumber==null || mobileNumber.length()<4) return "****";
+		return "********" + mobileNumber.substring(mobileNumber.length() - 2);
+	}
 }

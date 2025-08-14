@@ -12,6 +12,9 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import com.litmus7.employeemanager.constant.MessageConstants;
 import com.litmus7.employeemanager.dto.Employee;
 import com.litmus7.employeemanager.dto.Response;
@@ -24,6 +27,7 @@ import com.litmus7.employeemanager.util.ValidationUtil;
 public class EmployeeController {
 
 	private EmployeeService employeeService = new EmployeeService();
+	private final static Logger logger = LogManager.getLogger("EmployeeController.class");
 	
 	public Response<List<Employee>, Boolean, String> getDataFromTextFile(String inputFilePath) {
 		
@@ -83,72 +87,146 @@ public class EmployeeController {
 	}
 	
 	public Response<Void, Boolean, String> createEmployee(Employee employee) {
-		if (employee == null) return new Response<>(false, MessageConstants.EMPLOYEE_DETAILS_REQUIRED);
+		logger.trace("Entering createEmployee()");
+		
+		if (employee == null) {
+			logger.warn("Input employee object is {}",employee);
+			return new Response<>(false, MessageConstants.EMPLOYEE_DETAILS_REQUIRED);
+			}
+		
 		try {
 			employeeService.createEmployee(employee);
+			
+			logger.info("Employee created successfully: {}", employee.getId());
+			
+			logger.trace("Exiting createEmployee()");
+			
+			return new Response<>(true, MessageConstants.EMPLOYEE_INSERTED_SUCCESFULLY);
+			
 		} catch (EmployeeServiceException e) {
+			logger.error("Error creating employee for: {}", employee.getId(), e);
 			return new Response<>(false,MessageConstants.ERROR_EMPLOYEE_CREATION_FAILED);
 		} catch (Exception e) {
+			logger.error("Error creating employee for: {}", employee.getId(), e);
 			return new Response<>(false,MessageConstants.ERROR_MESSAGE);
 		}
-		return new Response<>(true, MessageConstants.EMPLOYEE_INSERTED_SUCCESFULLY);
+		
 	}
 	
 	public Response<List<Employee>, Boolean, String>  getAllEmployees() {
+		logger.trace("Entering getAllEmployees()");
+		
 		List<Employee> employees; //= new ArrayList<>();
+		
 		try {
 			employees = employeeService.getAllEmployees();
+			
+			logger.info("All employees fetched successfully");
+			logger.trace("Exiting getAllEmployees()");
+			
+			return new Response<>(employees,true,MessageConstants.ALL_EMPLOYEES_RETRIEVED_SUCCESSFULLY);
+		
 		} catch (EmployeeServiceException e) {
+			logger.error("Error fetching all employees", e);
 			return new Response<>(false,MessageConstants.ERROR_EMPLOYEES_FETCH_FAILED);
 		} catch (EmployeeNotFoundException e) {
+			logger.error("Error fetching all employees", e);
 			return new Response<>(false,e.getMessage());
 		} catch (Exception e) {
+			logger.error("Error fetching all employees", e);
 			return new Response<>(false,MessageConstants.ERROR_MESSAGE);
 		}
-		return new Response<>(employees,true,MessageConstants.ALL_EMPLOYEES_RETRIEVED_SUCCESSFULLY);
 	}
 	
 	public Response<Employee, Boolean, String> getEmployeeById(int employeeId) {
-		if (employeeId <= 0) return new Response<>(false, MessageConstants.INVALID_EMPLOYEE_ID);
+		logger.trace("Entering getEmployeeById() with employeeId: {}", employeeId);
+		
+		if (employeeId <= 0) {
+			logger.warn("Invalid input employeeId: {}", employeeId);
+			return new Response<>(false, MessageConstants.INVALID_EMPLOYEE_ID);
+			}
+		
 		Employee employee = null;
+		
 		try {
 			employee = employeeService.getEmployeeById(employeeId);
+			
+			logger.info("All employees fetched successfully");
+			
+			logger.trace("Exiting getEmployeeById() for employeeId: {}", employeeId);
+			
+			return new Response<>(employee,true,MessageConstants.EMPLOYEE_RETRIEVED_SUCCESSFULLY);
+			
 		} catch (EmployeeServiceException e) {
+			logger.error("Error fetching employee : {}", employeeId, e);
 			return new Response<>(false,MessageConstants.ERROR_EMPLOYEE_FETCH_FAILED);
 		} catch (EmployeeNotFoundException e) {
+			logger.error("Error fetching employee : {}", employeeId, e);
 			return new Response<>(false,e.getMessage());
 		}catch (Exception e) {
+			logger.error("Error fetching employee : {}", employeeId, e);
 			return new Response<>(false,MessageConstants.ERROR_MESSAGE);
 		}
-		return new Response<>(employee,true,MessageConstants.EMPLOYEE_RETRIEVED_SUCCESSFULLY);
 	}
 	
 	public Response<Void, Boolean, String> deleteEmployeebyId(int employeeId) {
-		if (employeeId <= 0) return new Response<>(false, MessageConstants.INVALID_EMPLOYEE_ID);
+		logger.trace("Entering deleteEmployeebyId() with employeeId: {}", employeeId);
+		
+		if (employeeId <= 0) {
+			logger.warn("Invalid input employeeId: {}", employeeId);
+			return new Response<>(false, MessageConstants.INVALID_EMPLOYEE_ID);
+			}
+		
 		try {
 			employeeService.deleteEmployeebyId(employeeId);
+			
+			logger.info("Employee deleted successfully: {}", employeeId);
+			
+			logger.trace("Exiting deleteEmployeebyId() for employeeId: {}", employeeId);
+			
+			return new Response<>(true,MessageConstants.EMPLOYEE_DELETED_SUCCESSFULLY);
+			
 		} catch (EmployeeServiceException e) {
+			logger.error("Error deleting employee : {}", employeeId, e);
 			return new Response<>(false,MessageConstants.ERROR_EMPLOYEE_DELETION_FAILED);
 		} catch (EmployeeNotFoundException e) {
+			logger.error("Error deleting employee : {}", employeeId, e);
 			return new Response<>(false,e.getMessage());
 		}catch (Exception e) {
+			logger.error("Error deleting employee : {}", employeeId, e);
 			return new Response<>(false,MessageConstants.ERROR_MESSAGE);
 		}
-		return new Response<>(true,MessageConstants.EMPLOYEE_DELETED_SUCCESSFULLY);
+
 	}
 
 	public Response<Void, Boolean, String> updateEmployee(Employee employee) {
-		if (employee == null) return new Response<>(false,MessageConstants.EMPLOYEE_DETAILS_REQUIRED);
+		logger.trace("Entering updateEmployee()");
+		
+		if (employee == null) {
+			logger.warn("Input employee object is {}",employee);
+			return new Response<>(false,MessageConstants.EMPLOYEE_DETAILS_REQUIRED);
+			}
+		
 		try {
 			employeeService.updateEmployee(employee);
+			
+			logger.info("Employee updated succesully: {}", employee.getId());
+			
+			logger.trace("Exiting updateEmployee()");
+			
+			return new Response<>(true, MessageConstants.EMPLOYEE_UPDATED_SUCCESSFULLY);
+			
 		} catch (EmployeeServiceException e) {
+			logger.error("Error updating employee: {}", employee.getId(), e);
 			return new Response<>(false,MessageConstants.ERROR_EMPLOYEE_UPDATION_FAILED);
 		} catch (EmployeeNotFoundException e) {
+			logger.error("Error updating employee: {}", employee.getId(), e);
 			return new Response<>(false,e.getMessage());
 		}catch (Exception e) {
+			logger.error("Error updating employee: {}", employee.getId(), e);
 			return new Response<>(false,MessageConstants.ERROR_MESSAGE);
 		}
-		return new Response<>(true, MessageConstants.EMPLOYEE_UPDATED_SUCCESSFULLY);
+		
 	}
 	
 	//private helper methods
