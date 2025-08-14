@@ -50,8 +50,8 @@ public class EmployeeController {
 	}
 
 	public Response<Void, Boolean, String> writeDataToCSV(List<Employee> employees,String csvFilePath) {
-		if (employees.isEmpty()) return new Response<>(null, false, MessageConstants.NO_EMPLOYEE_INFORMATION_FOUND);
-		if (csvFilePath == null || csvFilePath.isEmpty()) return new Response<>(null, false,MessageConstants.MISSING_OUTPUT_CSV_FILE + csvFilePath);
+		if (employees.isEmpty()) return new Response<>(false, MessageConstants.NO_EMPLOYEE_INFORMATION_FOUND);
+		if (csvFilePath == null || csvFilePath.isEmpty()) return new Response<>(false,MessageConstants.MISSING_OUTPUT_CSV_FILE + csvFilePath);
 		try(PrintWriter writer = new PrintWriter(new BufferedWriter(new FileWriter(csvFilePath)))) {
 			writer.println("ID,FirstName,LastName,MobileNumber,EmailAddress,JoiningDate(YYYY-MM-DD),ActiveStatus(true/false)");
 			for (Employee e : employees) {
@@ -64,16 +64,17 @@ public class EmployeeController {
 					e.getDate() + "," + e.getActiveStatus()
 					);
 			}
-			return new Response<>(null, true, MessageConstants.DATA_WRITTEN_TO_CSV_SUCCESSFULLY);
+			return new Response<>(true, MessageConstants.DATA_WRITTEN_TO_CSV_SUCCESSFULLY);
 		} catch (IOException e) {
-			return new Response<>(null, false, MessageConstants.FAILED_TO_WRITE_TO_CSV);
+			return new Response<>(false, MessageConstants.FAILED_TO_WRITE_TO_CSV);
 		}
 	}
 	
 	public Response<Employee, Boolean, String> appendDataToCSV(List<String> dataFromUser,List<Employee> emp,String csvFilePath){
-		Response<Employee, Boolean, String> validationResponse  = validateEmployeeData(null,dataFromUser, emp);
+		Response<Void, Boolean, String> validationResponse  = validateEmployeeData(dataFromUser, emp);
 		if (!validationResponse .getApplicationStatus()) {
-			return validationResponse ;
+			//return validationResponse ;
+			return new Response<>(null,validationResponse.getApplicationStatus(),validationResponse.getMessage());
 		}
 		
 		Employee employee = createEmployeeFromData(dataFromUser);
@@ -82,13 +83,15 @@ public class EmployeeController {
 	}
 	
 	public Response<Void, Boolean, String> createEmployee(Employee employee) {
-		if (employee == null) return new Response<>(null,false, MessageConstants.EMPLOYEE_DETAILS_REQUIRED);
+		if (employee == null) return new Response<>(false, MessageConstants.EMPLOYEE_DETAILS_REQUIRED);
 		try {
 			employeeService.createEmployee(employee);
 		} catch (EmployeeServiceException e) {
-			return new Response<>(null,false,MessageConstants.ERROR_EMPLOYEE_CREATION_FAILED);
+			return new Response<>(false,MessageConstants.ERROR_EMPLOYEE_CREATION_FAILED);
+		} catch (Exception e) {
+			return new Response<>(false,MessageConstants.ERROR_MESSAGE);
 		}
-		return new Response<>(null,true, MessageConstants.EMPLOYEE_INSERTED_SUCCESFULLY);
+		return new Response<>(true, MessageConstants.EMPLOYEE_INSERTED_SUCCESFULLY);
 	}
 	
 	public Response<List<Employee>, Boolean, String>  getAllEmployees() {
@@ -96,89 +99,97 @@ public class EmployeeController {
 		try {
 			employees = employeeService.getAllEmployees();
 		} catch (EmployeeServiceException e) {
-			return new Response<>(null,false,MessageConstants.ERROR_EMPLOYEES_FETCH_FAILED);
+			return new Response<>(false,MessageConstants.ERROR_EMPLOYEES_FETCH_FAILED);
 		} catch (EmployeeNotFoundException e) {
-			return new Response<>(null,false,e.getMessage());
+			return new Response<>(false,e.getMessage());
+		} catch (Exception e) {
+			return new Response<>(false,MessageConstants.ERROR_MESSAGE);
 		}
 		return new Response<>(employees,true,MessageConstants.ALL_EMPLOYEES_RETRIEVED_SUCCESSFULLY);
 	}
 	
 	public Response<Employee, Boolean, String> getEmployeeById(int employeeId) {
-		if (employeeId <= 0) return new Response<>(null,false, MessageConstants.INVALID_EMPLOYEE_ID);
+		if (employeeId <= 0) return new Response<>(false, MessageConstants.INVALID_EMPLOYEE_ID);
 		Employee employee = null;
 		try {
 			employee = employeeService.getEmployeeById(employeeId);
 		} catch (EmployeeServiceException e) {
-			return new Response<>(null,false,MessageConstants.ERROR_EMPLOYEE_FETCH_FAILED);
+			return new Response<>(false,MessageConstants.ERROR_EMPLOYEE_FETCH_FAILED);
 		} catch (EmployeeNotFoundException e) {
-			return new Response<>(null,false,e.getMessage());
+			return new Response<>(false,e.getMessage());
+		}catch (Exception e) {
+			return new Response<>(false,MessageConstants.ERROR_MESSAGE);
 		}
 		return new Response<>(employee,true,MessageConstants.EMPLOYEE_RETRIEVED_SUCCESSFULLY);
 	}
 	
 	public Response<Void, Boolean, String> deleteEmployeebyId(int employeeId) {
-		if (employeeId <= 0) return new Response<>(null,false, MessageConstants.INVALID_EMPLOYEE_ID);
+		if (employeeId <= 0) return new Response<>(false, MessageConstants.INVALID_EMPLOYEE_ID);
 		try {
 			employeeService.deleteEmployeebyId(employeeId);
 		} catch (EmployeeServiceException e) {
-			return new Response<>(null,false,MessageConstants.ERROR_EMPLOYEE_DELETION_FAILED);
+			return new Response<>(false,MessageConstants.ERROR_EMPLOYEE_DELETION_FAILED);
 		} catch (EmployeeNotFoundException e) {
-			return new Response<>(null,false,e.getMessage());
+			return new Response<>(false,e.getMessage());
+		}catch (Exception e) {
+			return new Response<>(false,MessageConstants.ERROR_MESSAGE);
 		}
-		return new Response<>(null,true,MessageConstants.EMPLOYEE_DELETED_SUCCESSFULLY);
+		return new Response<>(true,MessageConstants.EMPLOYEE_DELETED_SUCCESSFULLY);
 	}
 
 	public Response<Void, Boolean, String> updateEmployee(Employee employee) {
-		if (employee == null) return new Response<>(null,false,MessageConstants.EMPLOYEE_DETAILS_REQUIRED);
+		if (employee == null) return new Response<>(false,MessageConstants.EMPLOYEE_DETAILS_REQUIRED);
 		try {
 			employeeService.updateEmployee(employee);
 		} catch (EmployeeServiceException e) {
-			return new Response<>(null,false,MessageConstants.ERROR_EMPLOYEE_UPDATION_FAILED);
+			return new Response<>(false,MessageConstants.ERROR_EMPLOYEE_UPDATION_FAILED);
 		} catch (EmployeeNotFoundException e) {
-			return new Response<>(null,false,e.getMessage());
+			return new Response<>(false,e.getMessage());
+		}catch (Exception e) {
+			return new Response<>(false,MessageConstants.ERROR_MESSAGE);
 		}
-		return new Response<>(null,true, MessageConstants.EMPLOYEE_UPDATED_SUCCESSFULLY);
+		return new Response<>(true, MessageConstants.EMPLOYEE_UPDATED_SUCCESSFULLY);
 	}
 	
 	//private helper methods
-	private static Response<Employee, Boolean, String> validateEmployeeData(Employee e,List<String> dataFromUser, List<Employee> emp){
+	private static Response<Void, Boolean, String> validateEmployeeData(List<String> dataFromUser, List<Employee> emp){
 		if (!ValidationUtil.isInteger(dataFromUser.get(0))) {
-			return new Response<>(null, false, MessageConstants.INVALID_ID_FORMAT);
+			return new Response<>(false, MessageConstants.INVALID_ID_FORMAT);
 		}
 		if (!ValidationUtil.isUnique(dataFromUser.get(0), emp)) {
-			return new Response<>(null, false, MessageConstants.ID_MUST_BE_UNIQUE);
+			return new Response<>(false, MessageConstants.ID_MUST_BE_UNIQUE);
 		}
 		if (!ValidationUtil.isPositive(dataFromUser.get(0))) {
-			return new Response<>(null, false, MessageConstants.ID_MUST_BE_POSITIVE_INTEGER);
+			return new Response<>(false, MessageConstants.ID_MUST_BE_POSITIVE_INTEGER);
 		}
 		if (ValidationUtil.isEmpty(dataFromUser.get(1))) {
-			return new Response<>(null, false,MessageConstants.FIRST_NAME_CANNOT_BE_EMPTY);
+			return new Response<>(false,MessageConstants.FIRST_NAME_CANNOT_BE_EMPTY);
 		}
 		if (ValidationUtil.isEmpty(dataFromUser.get(2))) {
-			return new Response<>(null, false, MessageConstants.LAST_NAME_CANNOT_BE_EMPTY);
+			return new Response<>(false, MessageConstants.LAST_NAME_CANNOT_BE_EMPTY);
 		}
 		if (ValidationUtil.isEmpty(dataFromUser.get(3))) {
-			return new Response<>(null, false, MessageConstants.MOBILE_NUMBER_CANNOT_BE_EMPTY);
+			return new Response<>(false, MessageConstants.MOBILE_NUMBER_CANNOT_BE_EMPTY);
 		}
 		if (!ValidationUtil.isValidNumber(dataFromUser.get(3))) {
-			return new Response<>(null, false, MessageConstants.INVALID_MOBILE_NUMBER_FORMAT);
+			return new Response<>(false, MessageConstants.INVALID_MOBILE_NUMBER_FORMAT);
 		}
 		if (ValidationUtil.isEmpty(dataFromUser.get(4))) {
-			return new Response<>(null, false, MessageConstants.EMAIL_ADDRESS_CANNOT_BE_EMPTY);
+			return new Response<>(false, MessageConstants.EMAIL_ADDRESS_CANNOT_BE_EMPTY);
 		}
 		if (!ValidationUtil.isValidEmail(dataFromUser.get(4))) {
-			return new Response<>(null, false, MessageConstants.INVALID_EMAIL_ADDRESS_FORMAT);
+			return new Response<>(false, MessageConstants.INVALID_EMAIL_ADDRESS_FORMAT);
 		}
 		if (!ValidationUtil.isValidDate(dataFromUser.get(5))) {
-			return new Response<>(null, false, MessageConstants.INVALID_JOINING_DATE_FORMAT);
+			return new Response<>(false, MessageConstants.INVALID_JOINING_DATE_FORMAT);
 		}
 		if (ValidationUtil.isFutureDate(dataFromUser.get(5))) {
-			return new Response<>(null, false, MessageConstants.JOINING_DATE_CANNOT_BE_FUTURE);
+			return new Response<>(false, MessageConstants.JOINING_DATE_CANNOT_BE_FUTURE);
 		}
 		if (!ValidationUtil.isValidStatus(dataFromUser.get(6))) {
-			return new Response<>(null, false, MessageConstants.INVALID_ACTIVE_STATUS);
+			return new Response<>(false, MessageConstants.INVALID_ACTIVE_STATUS);
 		}
-		return new Response<>(null, true, MessageConstants.VALIDATION_PASSED);
+		return new Response<>(true, MessageConstants.VALIDATION_PASSED);
 	}
 	
 	private static Employee createEmployeeFromData(List<String> dataFromUser) {

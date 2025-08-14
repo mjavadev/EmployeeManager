@@ -12,6 +12,12 @@ public class Response<T, U , V> {
 		this.message = message;
 	}
 	
+	public Response(U applicationStatus, V message) {
+		this.applicationStatus = applicationStatus;
+		this.message = message;
+	}
+
+
 	public T getData() {
 		return data;
 	}

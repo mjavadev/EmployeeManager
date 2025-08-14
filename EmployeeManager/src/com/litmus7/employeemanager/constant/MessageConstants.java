@@ -66,7 +66,8 @@ public class MessageConstants {
 	public static final String ERROR_EMPLOYEE_UPDATION_FAILED = "Employee updation failed.";
 	public static final String ERROR_EMPLOYEE_FETCH_FAILED = "Failed to retrieve employee details.";
 	public static final String ERROR_EMPLOYEES_FETCH_FAILED = "Failed to retrieve employee list.";
-
+	
+	public static final String ERROR_MESSAGE= "Some error occured. Try again";
 	// Validation Messages
 
 	// Generic
