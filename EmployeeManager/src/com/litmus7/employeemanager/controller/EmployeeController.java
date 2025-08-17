@@ -21,6 +21,7 @@ import com.litmus7.employeemanager.dto.Response;
 import com.litmus7.employeemanager.exception.EmployeeNotFoundException;
 import com.litmus7.employeemanager.exception.EmployeeServiceException;
 import com.litmus7.employeemanager.service.EmployeeService;
+import com.litmus7.employeemanager.util.ErrorMessageUtil;
 import com.litmus7.employeemanager.util.TextFileUtil;
 import com.litmus7.employeemanager.util.ValidationUtil;
 
@@ -105,7 +106,7 @@ public class EmployeeController {
 			
 		} catch (EmployeeServiceException e) {
 			logger.error("Error creating employee for: {}", employee.getId(), e);
-			return new Response<>(false,MessageConstants.ERROR_EMPLOYEE_CREATION_FAILED);
+			return new Response<>(false,ErrorMessageUtil.getMessage(e.getErrorCode()));
 		} catch (Exception e) {
 			logger.error("Error creating employee for: {}", employee.getId(), e);
 			return new Response<>(false,MessageConstants.ERROR_MESSAGE);
@@ -128,10 +129,10 @@ public class EmployeeController {
 		
 		} catch (EmployeeServiceException e) {
 			logger.error("Error fetching all employees", e);
-			return new Response<>(false,MessageConstants.ERROR_EMPLOYEES_FETCH_FAILED);
+			return new Response<>(false,ErrorMessageUtil.getMessage(e.getErrorCode()));
 		} catch (EmployeeNotFoundException e) {
 			logger.error("Error fetching all employees", e);
-			return new Response<>(false,e.getMessage());
+			return new Response<>(false,ErrorMessageUtil.getMessage(e.getErrorCode()));
 		} catch (Exception e) {
 			logger.error("Error fetching all employees", e);
 			return new Response<>(false,MessageConstants.ERROR_MESSAGE);
@@ -159,10 +160,10 @@ public class EmployeeController {
 			
 		} catch (EmployeeServiceException e) {
 			logger.error("Error fetching employee : {}", employeeId, e);
-			return new Response<>(false,MessageConstants.ERROR_EMPLOYEE_FETCH_FAILED);
+			return new Response<>(false,ErrorMessageUtil.getMessage(e.getErrorCode()));
 		} catch (EmployeeNotFoundException e) {
 			logger.error("Error fetching employee : {}", employeeId, e);
-			return new Response<>(false,e.getMessage());
+			return new Response<>(false,ErrorMessageUtil.getMessage(e.getErrorCode()));
 		}catch (Exception e) {
 			logger.error("Error fetching employee : {}", employeeId, e);
 			return new Response<>(false,MessageConstants.ERROR_MESSAGE);
@@ -188,10 +189,10 @@ public class EmployeeController {
 			
 		} catch (EmployeeServiceException e) {
 			logger.error("Error deleting employee : {}", employeeId, e);
-			return new Response<>(false,MessageConstants.ERROR_EMPLOYEE_DELETION_FAILED);
+			return new Response<>(false,ErrorMessageUtil.getMessage(e.getErrorCode()));
 		} catch (EmployeeNotFoundException e) {
 			logger.error("Error deleting employee : {}", employeeId, e);
-			return new Response<>(false,e.getMessage());
+			return new Response<>(false,ErrorMessageUtil.getMessage(e.getErrorCode()));
 		}catch (Exception e) {
 			logger.error("Error deleting employee : {}", employeeId, e);
 			return new Response<>(false,MessageConstants.ERROR_MESSAGE);
@@ -218,10 +219,10 @@ public class EmployeeController {
 			
 		} catch (EmployeeServiceException e) {
 			logger.error("Error updating employee: {}", employee.getId(), e);
-			return new Response<>(false,MessageConstants.ERROR_EMPLOYEE_UPDATION_FAILED);
+			return new Response<>(false,ErrorMessageUtil.getMessage(e.getErrorCode()));
 		} catch (EmployeeNotFoundException e) {
 			logger.error("Error updating employee: {}", employee.getId(), e);
-			return new Response<>(false,e.getMessage());
+			return new Response<>(false,ErrorMessageUtil.getMessage(e.getErrorCode()));
 		}catch (Exception e) {
 			logger.error("Error updating employee: {}", employee.getId(), e);
 			return new Response<>(false,MessageConstants.ERROR_MESSAGE);

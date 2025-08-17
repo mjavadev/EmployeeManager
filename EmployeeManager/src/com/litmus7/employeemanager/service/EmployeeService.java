@@ -29,13 +29,13 @@ public class EmployeeService {
 			if (rowInserted>0) {
 				logger.info("Employee created successfully: {}", employee.getId());
 			} else {
-				logger.warn("Employee creation returned 0 rows for employeeId: {}", employee.getId());
-				throw new EmployeeServiceException(MessageConstants.ERROR_SERVICE_CREATE_EMPLOYEE);
+				logger.warn("Error code: {}, Message: {}, EmployeeId: {}",MessageConstants.ERROR_CODE_SERVICE_CREATE_EMPLOYEE_NO_ROWS, MessageConstants.ERROR_SERVICE_CREATE_EMPLOYEE_NO_ROWS, employee.getId());
+				throw new EmployeeServiceException(MessageConstants.ERROR_CODE_SERVICE_CREATE_EMPLOYEE_NO_ROWS, MessageConstants.ERROR_SERVICE_CREATE_EMPLOYEE_NO_ROWS);
 			}
 			
 		} catch (EmployeeDaoException e) {
-			logger.error("Error creating employee: {}", employee.getId(), e);
-			throw new EmployeeServiceException(MessageConstants.ERROR_SERVICE_CREATE_EMPLOYEE, e);
+			logger.error("Error code: {}, Message: {}, EmployeeId: {}",e.getErrorCode(),MessageConstants.ERROR_SERVICE_CREATE_EMPLOYEE, employee.getId(), e);
+			throw new EmployeeServiceException(e.getErrorCode(),MessageConstants.ERROR_SERVICE_CREATE_EMPLOYEE, e);
 		}
 	
 		logger.trace("Exiting createEmployee() for employeeId: {}", employee.getId());
@@ -51,16 +51,16 @@ public class EmployeeService {
 			employees = employeeDAO.getAllEmployees();
 			
 			if (employees.isEmpty()) {
-				logger.warn("Employees retrieval returned 0 rows");
-				throw new EmployeeNotFoundException(MessageConstants.ERROR_NO_EMPLOYEES_FOUND);
+				logger.warn("Error code: {}, Message: {}",MessageConstants.ERROR_CODE_NO_EMPLOYEES_FOUND, MessageConstants.ERROR_NO_EMPLOYEES_FOUND);
+				throw new EmployeeNotFoundException(MessageConstants.ERROR_CODE_NO_EMPLOYEES_FOUND, MessageConstants.ERROR_NO_EMPLOYEES_FOUND);
 			}
 			else {
 				logger.info("{} employee(s) retrieved successfully", employees.size());
 			}
 			
 		} catch (EmployeeDaoException e) {
-			logger.error("Error fetching employees", e);
-			throw new EmployeeServiceException(MessageConstants.ERROR_SERVICE_FETCH_ALL_EMPLOYEES, e);
+			logger.error("Error code: {}, Message: {}",e.getErrorCode(), MessageConstants.ERROR_SERVICE_FETCH_ALL_EMPLOYEES, e);
+			throw new EmployeeServiceException(e.getErrorCode(), MessageConstants.ERROR_SERVICE_FETCH_ALL_EMPLOYEES, e);
 		}
 		
 		logger.trace("Exiting getAllEmployees()");
@@ -77,16 +77,16 @@ public class EmployeeService {
 			employee = employeeDAO.getEmployeeById(employeeId);
 			
 			if (employee == null) { 
-				logger.warn("Employee retrieval returned 0 rows");
-				throw new EmployeeNotFoundException(String.format(MessageConstants.ERROR_EMPLOYEE_NOT_FOUND_BY_ID, employeeId));
+				logger.warn("Error code: {}, Message: {}, EmployeeId: {}",MessageConstants.ERROR_CODE_EMPLOYEE_NOT_FOUND_BY_ID, MessageConstants.EMPLOYEE_NOT_FOUND,employeeId);
+				throw new EmployeeNotFoundException(MessageConstants.ERROR_CODE_EMPLOYEE_NOT_FOUND_BY_ID, String.format(MessageConstants.ERROR_EMPLOYEE_NOT_FOUND_BY_ID, employeeId));
 			}
 			else {
 				logger.info("Employee retrieved successfully: {}", employee.getId());
 			}
 			
 		} catch (EmployeeDaoException e) {
-			logger.error("Error fetching employee: {}",employeeId,e);
-			throw new EmployeeServiceException(MessageConstants.ERROR_SERVICE_FETCH_EMPLOYEE,e);
+			logger.error("Error code: {}, Message: {}, EmployeeId: {}",e.getErrorCode(), MessageConstants.ERROR_SERVICE_FETCH_EMPLOYEE,employeeId,e);
+			throw new EmployeeServiceException(e.getErrorCode(), MessageConstants.ERROR_SERVICE_FETCH_EMPLOYEE,e);
 		}
 		
 		logger.trace("Exiting getEmployeeById() for employeeId: {}", employeeId);
@@ -106,13 +106,13 @@ public class EmployeeService {
 				logger.info("Employee deleted successfully: {}", employeeId);
 			}
 			else {
-				logger.warn("Employee deletion failed: {}", employeeId);
-				throw new EmployeeNotFoundException(String.format(MessageConstants.ERROR_EMPLOYEE_NOT_FOUND_BY_ID, employeeId));
+				logger.warn("Error code: {}, Message: {}",MessageConstants.ERROR_CODE_NO_ROWS_AFFECTED,String.format(MessageConstants.ERROR_EMPLOYEE_DELETE_NO_ROWS_AFFECTED, employeeId));
+				throw new EmployeeServiceException(MessageConstants.ERROR_CODE_NO_ROWS_AFFECTED, String.format(MessageConstants.ERROR_EMPLOYEE_DELETE_NO_ROWS_AFFECTED, employeeId));
 			}
 	
 		} catch (EmployeeDaoException e) {
-			logger.error("Error deleting employee: {}",employeeId);
-			throw new EmployeeServiceException(MessageConstants.ERROR_SERVICE_DELETE_EMPLOYEE,e);   //)
+			logger.error("Error code: {}, Message: {}, EmployeeId: {}",e.getErrorCode(), MessageConstants.ERROR_SERVICE_DELETE_EMPLOYEE,employeeId,e);
+			throw new EmployeeServiceException(e.getErrorCode(), MessageConstants.ERROR_SERVICE_DELETE_EMPLOYEE,e);
 		}
 		
 		logger.trace("Exiting deleteEmployeebyId() for employeeId: {}", employeeId);
@@ -132,13 +132,13 @@ public class EmployeeService {
 				logger.info("Employee details updated successfully for: {}", employee.getId());
 			}
 			else {
-				logger.warn("Updation failed for employee: {}", employee.getId());
-				throw new EmployeeNotFoundException(String.format(MessageConstants.ERROR_EMPLOYEE_NOT_FOUND_BY_ID, employee.getId()));
+				logger.warn("Error code: {}, Message: {}",MessageConstants.ERROR_CODE_NO_ROWS_AFFECTED,String.format(MessageConstants.ERROR_EMPLOYEE_UPDATE_NO_ROWS_AFFECTED, employee.getId()));
+				throw new EmployeeServiceException(MessageConstants.ERROR_CODE_NO_ROWS_AFFECTED, String.format(MessageConstants.ERROR_EMPLOYEE_UPDATE_NO_ROWS_AFFECTED, employee.getId()));
 			}
 			
 		} catch(EmployeeDaoException e) {
-			logger.error("Error updating employee: {}",employee.getId());
-			throw new EmployeeServiceException(MessageConstants.ERROR_SERVICE_UPDATE_EMPLOYEE, e);
+			logger.error("Error code: {}, Message: {}, EmployeeId: {}",e.getErrorCode(),MessageConstants.ERROR_SERVICE_UPDATE_EMPLOYEE,employee.getId(),e);
+			throw new EmployeeServiceException(e.getErrorCode(),MessageConstants.ERROR_SERVICE_UPDATE_EMPLOYEE, e);
 		}
 		
 		logger.trace("Exiting updateEmployee() for employeeId: {}", employee.getId());

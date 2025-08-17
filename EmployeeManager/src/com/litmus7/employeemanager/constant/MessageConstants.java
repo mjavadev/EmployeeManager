@@ -8,10 +8,20 @@ public class MessageConstants {
 	//error massages
 	//Employee - DAO Layer Failure Messages
 	public static final String ERROR_DB_SAVE_EMPLOYEE = "Database error while saving employee";
+	public static final String ERROR_CODE_DB_SAVE_EMPLOYEE = "EMP_DB_001";
+	
 	public static final String ERROR_DB_FETCH_EMPLOYEE = "Database error while fetching employee";
+	public static final String ERROR_CODE_DB_FETCH_EMPLOYEE = "EMP_DB_002";
+	
 	public static final String ERROR_DB_FETCH_ALL_EMPLOYEES = "Database error while fetching all employees";
+	public static final String ERROR_CODE_DB_FETCH_ALL_EMPLOYEES = "EMP_DB_003";
+	
 	public static final String ERROR_DB_DELETE_EMPLOYEE = "Database error while deleting employee";
+	public static final String ERROR_CODE_DB_DELETE_EMPLOYEE = "EMP_DB_004";
+	
 	public static final String ERROR_DB_UPDATE_EMPLOYEE = "Database error while updating employee";
+	public static final String ERROR_CODE_DB_UPDATE_EMPLOYEE = "EMP_DB_005";
+	
 	
 	public static final String ERROR_INSERTING_EMPLOYEE = "An error occurred while inserting the employee.";
 	public static final String ERROR_RETRIEVING_EMPLOYEE_LIST = "An error occurred while retrieving employee list.";
@@ -29,8 +39,18 @@ public class MessageConstants {
 	public static final String ERROR_SERVICE_DELETE_EMPLOYEE = "Service layer failed to delete employee";
 	public static final String ERROR_SERVICE_UPDATE_EMPLOYEE = "Service layer failed to update employee";
 	
-	public static final String ERROR_EMPLOYEE_NOT_FOUND_BY_ID = "Employee with ID %s not found.";
+	public static final String ERROR_SERVICE_CREATE_EMPLOYEE_NO_ROWS = "No rows affected while creating employee";
+	public static final String ERROR_CODE_SERVICE_CREATE_EMPLOYEE_NO_ROWS = "EMP-SRV-001";
+	
 	public static final String ERROR_NO_EMPLOYEES_FOUND = "No Employees found.";
+	public static final String ERROR_CODE_NO_EMPLOYEES_FOUND = "EMP-SRV-002";
+	
+	public static final String ERROR_EMPLOYEE_NOT_FOUND_BY_ID = "Employee with ID %s not found.";
+	public static final String ERROR_CODE_EMPLOYEE_NOT_FOUND_BY_ID = "EMP-SRV-003";
+	
+	public static final String ERROR_EMPLOYEE_UPDATE_NO_ROWS_AFFECTED = "No rows affected while updating employee with ID %s";
+	public static final String ERROR_EMPLOYEE_DELETE_NO_ROWS_AFFECTED = "No rows affected while deleting employee with ID %s";
+	public static final String ERROR_CODE_NO_ROWS_AFFECTED = "EMP-SRV-004";
 	
 	
 	public static final String FAILED_TO_INSERT_EMPLOYEE = "Failed to insert employee.";
@@ -67,7 +87,19 @@ public class MessageConstants {
 	public static final String ERROR_EMPLOYEE_FETCH_FAILED = "Failed to retrieve employee details.";
 	public static final String ERROR_EMPLOYEES_FETCH_FAILED = "Failed to retrieve employee list.";
 	
-	public static final String ERROR_MESSAGE= "Some error occured. Try again";
+	public static final String ERROR_UI_EMP_DB_001 = "We couldn’t save the employee details. Please try again.";
+	public static final String ERROR_UI_EMP_DB_002 = "We couldn’t fetch the employee details. Please try again.";
+	public static final String ERROR_UI_EMP_DB_003 = "Unable to load employees at the moment. Please try again.";
+	public static final String ERROR_UI_EMP_DB_004 = "We couldn’t delete the employee. Please try again.";
+	public static final String ERROR_UI_EMP_DB_005 = "We couldn’t update the employee details. Please try again.";
+	
+	public static final String ERROR_UI_EMP_SRV_001 = "Employee could not be created. Please try again.";
+	public static final String ERROR_UI_EMP_SRV_002 = "No employees found in the system.";
+	public static final String ERROR_UI_EMP_SRV_003 = "The requested employee was not found.";
+	public static final String ERROR_UI_EMP_SRV_004 = "The requested operation could not be completed. Please check the employee ID.";
+	
+	public static final String ERROR_MESSAGE= "Something went wrong. Please try again later.";
+
 	// Validation Messages
 
 	// Generic

@@ -45,8 +45,8 @@ public class EmployeeDAO {
 			
 			return rowsInserted;
 		} catch(SQLException e) {
-			logger.error("Error saving employee: {}", employee.getId(), e);
-			throw new EmployeeDaoException(MessageConstants.ERROR_DB_SAVE_EMPLOYEE,e);
+			logger.error("Error code: {}, Message: {}, EmployeeId: {}",MessageConstants.ERROR_CODE_DB_SAVE_EMPLOYEE,MessageConstants.ERROR_DB_SAVE_EMPLOYEE, employee.getId(), e);
+			throw new EmployeeDaoException(MessageConstants.ERROR_DB_SAVE_EMPLOYEE,e,MessageConstants.ERROR_CODE_DB_SAVE_EMPLOYEE);
 		}
 	} 
 	
@@ -66,8 +66,8 @@ public class EmployeeDAO {
 			
 			return employees;
 		} catch(SQLException e) {
-			logger.error("Error fetching all employees", e);
-			throw new EmployeeDaoException(MessageConstants.ERROR_DB_FETCH_ALL_EMPLOYEES,e);
+			logger.error("Error code: {}, Message: {}",MessageConstants.ERROR_CODE_DB_FETCH_ALL_EMPLOYEES,MessageConstants.ERROR_DB_FETCH_ALL_EMPLOYEES, e);
+			throw new EmployeeDaoException(MessageConstants.ERROR_DB_FETCH_ALL_EMPLOYEES,e, MessageConstants.ERROR_CODE_DB_FETCH_ALL_EMPLOYEES);
 		}
 	}
 	
@@ -87,8 +87,8 @@ public class EmployeeDAO {
 				return employee;
 			}
 		} catch(SQLException e) {
-			logger.error("Error fetching employee with employeeId: {}", employeeId, e);
-			throw new EmployeeDaoException(MessageConstants.ERROR_DB_FETCH_EMPLOYEE,e);
+			logger.error("Error code: {}, Message: {}, EmployeeId: {}",MessageConstants.ERROR_CODE_DB_FETCH_EMPLOYEE,MessageConstants.ERROR_DB_FETCH_EMPLOYEE, employeeId, e);
+			throw new EmployeeDaoException(MessageConstants.ERROR_DB_FETCH_EMPLOYEE,e, MessageConstants.ERROR_CODE_DB_FETCH_EMPLOYEE);
 		}
 	}
 	
@@ -108,8 +108,8 @@ public class EmployeeDAO {
 			
 			return rowsDeleted;
 		} catch(SQLException e) {
-			logger.error("Error deleting employee with employeeId: {}", employeeId, e);
-			throw new EmployeeDaoException(MessageConstants.ERROR_DB_DELETE_EMPLOYEE,e);
+			logger.error("Error code: {}, Message: {}, EmployeeId: {}",MessageConstants.ERROR_CODE_DB_DELETE_EMPLOYEE,MessageConstants.ERROR_DB_DELETE_EMPLOYEE, employeeId, e);
+			throw new EmployeeDaoException(MessageConstants.ERROR_DB_DELETE_EMPLOYEE,e,MessageConstants.ERROR_CODE_DB_DELETE_EMPLOYEE);
 		}
 	}
 	
@@ -135,8 +135,8 @@ public class EmployeeDAO {
 			
 			return rowsUpdated;
 		} catch(SQLException e) {
-			logger.error("Error updating employee with employeeId: {}", employee.getId(), e);
-			throw new EmployeeDaoException(MessageConstants.ERROR_DB_UPDATE_EMPLOYEE,e);
+			logger.error("Error code: {}, Message: {}, EmployeeId: {}",MessageConstants.ERROR_CODE_DB_UPDATE_EMPLOYEE,MessageConstants.ERROR_DB_UPDATE_EMPLOYEE, employee.getId(), e);
+			throw new EmployeeDaoException(MessageConstants.ERROR_DB_UPDATE_EMPLOYEE,e, MessageConstants.ERROR_CODE_DB_UPDATE_EMPLOYEE);
 		}
 	}
 	

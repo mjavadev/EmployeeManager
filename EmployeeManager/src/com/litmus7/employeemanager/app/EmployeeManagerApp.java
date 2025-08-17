@@ -7,10 +7,10 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.litmus7.employeemanager.dto.Employee;
-import com.litmus7.employeemanager.dto.Response;
 import com.litmus7.employeemanager.constant.MessageConstants;
 import com.litmus7.employeemanager.controller.EmployeeController;
+import com.litmus7.employeemanager.dto.Employee;
+import com.litmus7.employeemanager.dto.Response;
 
 public class EmployeeManagerApp {
 	
@@ -31,11 +31,11 @@ public class EmployeeManagerApp {
 		while (flag) {
 			System.out.println("1.Get data from text file and write data to csv\n"
 					+ "2.Add new employee data to CSV\n"
-					+ "3.Create employee\n"
+					+ "3.Create a new employee\n"
 					+ "4.Get all employees\n"
-					+ "5.Get employee by ID\n"
+					+ "5.Find employee by ID\n"
 					+ "6.Delete employee by ID\n"
-					+ "7.Update employee\n"
+					+ "7.Update employee details\n"
 					+ "8.Exit");
 			int choice = -1;
 			System.out.print("Enter choice: ");
@@ -126,9 +126,7 @@ public class EmployeeManagerApp {
 					System.out.println("Invalid choice\n");
 				}
 				
-			} catch (NumberFormatException e) {
-				System.err.println(MessageConstants.ERROR_INVALID_NUMBER+"\n");
-			} catch (IOException e) {
+			}catch (IOException e) {
 				System.err.println(MessageConstants.ERROR_FILE_ACCESS_FAILED+"\n");
 			} 
 		}
